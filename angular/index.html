@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <script src="../common/lib/jquery-1.11.1.min.js"></script>
+    <script src= "lib/angular.js"></script>
+
+    <script src= "../common/js/base.js"></script>
+    <script src= "../common/js/list.js"></script>
+
+    <link rel="stylesheet" href="../common/css/app.css" />
+    <script src = "js/app.js"></script>
+  </head>
+
+<body class="" ng-controller="main">
+    <div class="header">
+      <div class="sort-column">
+        <span class="click" ng-click="changeSort('name')">Name</span>
+      </div>
+      <div class="sort-column">
+        <span class="click" ng-click="changeSort('size')">Size</span>
+      </div>
+      <div class="sort-column">
+        <span class="click" ng-click="changeSort('date')">Date</span>
+      </div>
+    </div>
+
+    <table class="item-list" ng-style="{'padding-bottom': paddingBottom(), 'padding-top': paddingTop()}">
+      <tbody>
+        <tr ng-repeat="item in visibleItems()">
+          <td>{{$index + startRow}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.size}}</td>
+          <td>{{item.date}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+</body>
+</html>

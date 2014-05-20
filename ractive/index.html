@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src= "lib/ractive.js"></script>
+
+    <script src= "../common/js/base.js"></script>
+    <script src= "../common/js/list.js"></script>
+
+    <link rel="stylesheet" href="../common/css/app.css" />
+  </head>
+
+<body class="">
+
+  <div id="app"></div>
+
+  <script id="template" type="text/ractive">
+    <div class="header">
+      <div on-click='clickName'>Name</div>
+      <div on-click="clickSize">Size</div>
+      <div on-click="clickDate">Date</div>
+    </div>
+    <table class="item-list" style="padding-top: {{paddingTop}}; padding-bottom: {{paddingBottom}}">
+      <tbody>
+        {{#visibleItems:i}}
+        <tr>
+          <td>{{startRow + i}}</td>
+          <td>{{name}}</td>
+          <td>{{size}}</td>
+          <td>{{date}}</td>
+        </tr>
+        {{/visibleItems}}
+      </tbody>
+    </table>
+  </script>
+  <script src = "js/app.js"></script>
+
+</body>
+</html>

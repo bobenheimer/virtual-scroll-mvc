@@ -1,0 +1,45 @@
+/*@import "bootstrap/mixins";
+@import "bootstrap/print";
+@import "bootstrap/scaffolding";
+@import "bootstrap/normalize";*/
+.header {
+  color: white;
+  background: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  line-height: 36px;
+  font-size: 20px;
+  text-align: center;
+}
+.header .sort-column {
+  float: left;
+  width: 33%;
+}
+table.item-list {
+  margin-top: 36px;
+  width: 100%;
+  font-size: 14px;
+}
+table.item-list tr {
+  height: 20px;
+}
+table.item-list th,
+table.item-list td {
+  width: 25%;
+  text-align: center;
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/Open_Sans/OpenSans-Regular.ttf") format("woff");
+}
+body {
+  font-family: "Open Sans", "Arial";
+}
+.click {
+  cursor: pointer;
+}
