@@ -37,11 +37,12 @@ App.controller('main', function($scope, $timeout) {
 
   $window.scroll(delayedScrollFunction);
 
-  $scope.itemsCount = 500;
-  $scope.items = Common.list.get(500);
+  $scope.inputModels = {
+    itemsCount: 500
+  };
 
-  $scope.$watch("itemsCount", function() {
-    console.log(arguments)
+  $scope.$watch("inputModels.itemsCount", function(val) {
+    $scope.items = Common.list.get(val);
   });
 
   $scope.sortColumn = "name";
@@ -49,10 +50,6 @@ App.controller('main', function($scope, $timeout) {
 
   $scope.startRow = 0;
   $scope.endRow = 0;
-
-  $scope.changeItems = function() {
-
-  }
 
   $scope.sortedItems = function() {
     var sortColumn = $scope.sortColumn;
