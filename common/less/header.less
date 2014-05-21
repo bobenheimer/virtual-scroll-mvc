@@ -1,15 +1,59 @@
 .header {
   color: white;
   background: black;
+
   position: fixed;
   top: 0; left: 0; right: 0;
+
   height: 36px;
   line-height: 36px;
-  font-size: 20px;
-  text-align: center;
 
-  .sort-column {
+  .index {
     float: left;
-    width: 33%;
+    width: 5%;
+    padding: 0 6px;
+    font-size: 14px;
+  }
+
+  .sorts {
+    font-family: Jura;
+    .clearfix;
+    float: left;
+
+    .sort-column {
+
+      float: left;
+      padding: 0 12px;
+
+      .sort-text {
+        cursor: pointer;
+      }
+
+      &.down {
+        .sort-text:after {
+          content: " \25B5";
+        }
+      }
+
+      &.up {
+        .sort-text:after {
+          content: " \25BF";
+        }
+      }
+
+      &.active {
+        font-weight: 700;
+
+      }
+    }
+  }
+
+  .modify-count {
+    padding: 0 12px;
+    float: right;
+    input {
+      color: #000000;
+    }
+
   }
 }

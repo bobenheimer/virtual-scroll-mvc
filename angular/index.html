@@ -11,30 +11,44 @@
     <script src = "js/app.js"></script>
   </head>
 
-<body class="" ng-controller="main">
+<body ng-controller="main">
     <div class="header">
-      <div class="sort-column">
-        <span class="click" ng-click="changeSort('name')">Name</span>
+      <div class="index">
+        <span>Index</span>
       </div>
-      <div class="sort-column">
-        <span class="click" ng-click="changeSort('size')">Size</span>
+
+      <div class="sorts">
+        <h4 class="sort-column" ng-class="sortCss('name')">
+          <span class="sort-text" ng-click="changeSort('name')">Name</span>
+        </h4>
+        <h4 class="sort-column" ng-class="sortCss('size')">
+          <span class="sort-text" ng-click="changeSort('size')">Size</span>
+        </h4>
+        <h4 class="sort-column" ng-class="sortCss('date')">
+          <span class="sort-text" ng-click="changeSort('date')">Date</span>
+        </h4>
       </div>
-      <div class="sort-column">
-        <span class="click" ng-click="changeSort('date')">Date</span>
+
+      <div class="modify-count">
+        <span class="label">Items in list</span>
+        <input type="number">
       </div>
     </div>
 
-    <table class="item-list" ng-style="{'padding-bottom': paddingBottom(), 'padding-top': paddingTop()}">
+    <div class="offset item-list-offset" ng-style="{'height': offsetTop()}"></div>
+
+    <table class="item-list">
       <tbody>
         <tr ng-repeat="item in visibleItems()">
-          <td>{{$index + startRow}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.size}}</td>
-          <td>{{item.date}}</td>
+          <td class="index">{{$index + startRow}}</td>
+          <td class="name">{{item.name}}</td>
+          <td class="size">{{item.size}}</td>
+          <td class="date">{{item.date}}</td>
         </tr>
       </tbody>
     </table>
 
+    <div class="offset" ng-style="{'height': offsetBottom()}"></div>
 
 </body>
 </html>

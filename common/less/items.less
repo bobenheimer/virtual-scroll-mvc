@@ -1,13 +1,30 @@
 table.item-list {
-  margin-top: 36px;
   width: 100%;
   font-size: 14px;
 
   tr {
     height: 20px;
   }
-  th, td {
-    width: 25%;
-    text-align: center;
+  td {
+    padding: 0 6px;
+    &.index {
+      font-weight: 100;
+      width: 5%;
+    }
+
+    &.name {
+      width: 55%;
+    }
+
+    &.size {
+      width: 10%;
+    }
+
+    &.date {
+      width: 30%;
+    }
   }
+}
+.item-list-offset {
+  margin-top: 36px;
 }

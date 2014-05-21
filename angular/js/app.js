@@ -1,27 +1,67 @@
 var App = angular.module('app', []);
 
-App.controller('main', function($scope) {
+App.controller('main', function($scope, $timeout) {
   var $list = $(".item-list");
-  var $window = $(window);
-  var rowHeight = 20;
+  var listOffset = $list.offset().top; //grab the original offset of the list
 
-  $scope.items = Common.getList(500000);
-  $scope.sort = {
-    column: "name",
-    direction: 1
-  };
+  var $window = $(window);
+
+  var rowHeight = 20;
+  var extraPixels = 100; //extra dom nodes to render on the top and bottom to make things look a bit smoother
+
+  //This function will set $scope.scrollTop to window.scrolltop every waittime milliseconds
+  //So if waittime is 5ms, scrollTop will get updated NO MORE OFTEN than 5ms
+  var delayedScrollFunction = (function(waitTime) {
+    var timeoutFunc = null;
+    var timestamp = new Date().getTime();
+
+    var scrollFunction = function() {
+      $scope.scrollTop = $window.scrollTop();
+    }
+
+    var returnFunc = function() {
+      $timeout.cancel(timeoutFunc);
+      var newtimestamp = new Date().getTime();
+
+      if (newtimestamp - timestamp > waitTime) {
+        $scope.$apply(scrollFunction)
+      } else{
+        timeoutFunc = $timeout(scrollFunction, waitTime);
+      }
+      timestamp = newtimestamp;
+    }
+
+    $scope.scrollTop = $window.scrollTop();
+    return returnFunc;
+  })(5); //waittime of 5
+
+  $window.scroll(delayedScrollFunction);
+
+  $scope.itemsCount = 500;
+  $scope.items = Common.list.get(500);
+
+  $scope.$watch("itemsCount", function() {
+    console.log(arguments)
+  });
+
+  $scope.sortColumn = "name";
+  $scope.sortDirection = 1;
 
   $scope.startRow = 0;
   $scope.endRow = 0;
 
+  $scope.changeItems = function() {
+
+  }
+
   $scope.sortedItems = function() {
-    var sortColumn = $scope.sort.column;
-    var sortDirection = $scope.sort.direction;
+    var sortColumn = $scope.sortColumn;
+    var sortDirection = $scope.sortDirection;
     var items = $scope.items.slice();
 
     items.sort(function(a, b) {
       return a[sortColumn] > b[sortColumn] ? sortDirection : -sortDirection;
-    })
+    });
 
     return items;
   }
@@ -29,11 +69,11 @@ App.controller('main', function($scope) {
   $scope.visibleItems = function() {
     var items = $scope.sortedItems();
     var scrollTop = $scope.scrollTop;
-    var windowHeight = $window.height();
-    var preloadFactor = 200; // load rows 1000px off the screen
 
-    var startPos = scrollTop - preloadFactor;
-    var endPos = scrollTop + windowHeight + preloadFactor;
+    var listHeight = $window.height() - listOffset;
+
+    var startPos = scrollTop - extraPixels;
+    var endPos = scrollTop + listHeight + extraPixels;
 
     var startRow = Math.floor(startPos / rowHeight);
     var endRow = Math.ceil(endPos / rowHeight);
@@ -47,32 +87,31 @@ App.controller('main', function($scope) {
   }
 
   $scope.changeSort = function(column) {
-    $scope.sort.column = column;
-    $scope.sort.direction *= -1;
+    $scope.sortColumn = column;
+    $scope.sortDirection *= -1;
   }
 
-  $scope.scrollTop = 0;
-  $window.scroll(function() {
-    $scope.$apply(function() {
-      var scrollTop = $window.scrollTop();
-      if ($list.length > 0) {
-        var offset = $list.offset();
-        scrollTop -= offset.top;
-      }
-      $scope.scrollTop = scrollTop;
+  $scope.sortCss = function(column) {
+    if (column !== $scope.sortColumn) {
+      return {};
+    }
+    return {
+      active: true,
+      up: $scope.sortDirection === 1,
+      down: $scope.sortDirection === -1
+    }
+  }
 
-    })
-  })
-
-  $scope.paddingTop = function() {
+  $scope.offsetTop = function() {
     var padding = Math.round($scope.startRow * rowHeight);
     return padding + "px";
   }
 
-  $scope.paddingBottom = function() {
-    //if (!visibleStart || !rowHeight || !numColumns) return "0px";
-
-    var diff = $scope.endRow > $scope.items.length ? 0 :$scope. items.length - $scope.endRow;
+  $scope.offsetBottom = function() {
+    if ($scope.endRow > $scope.items.length) {
+      return "0px";
+    }
+    var diff = $scope.items.length - $scope.endRow;
     var padding = Math.round(diff * rowHeight);
     return padding + "px";
   }

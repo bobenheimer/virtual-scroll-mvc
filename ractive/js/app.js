@@ -7,7 +7,7 @@ var App = new (function() {
   self.template = "#template";
 
   self.data = {
-    items: Common.getList(500000),
+    items: Common.list.get(500000),
     sort: {column: "name", direction: 1},
     scrollTop: 0,
     startRow: 0,
