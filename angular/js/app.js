@@ -38,7 +38,7 @@ App.controller('main', function($scope, $timeout) {
   $window.scroll(delayedScrollFunction);
 
   $scope.inputModels = {
-    itemsCount: 500
+    itemsCount: Common.defaultListSize
   };
 
   $scope.$watch("inputModels.itemsCount", function(val) {

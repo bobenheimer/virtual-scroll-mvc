@@ -1,43 +1,45 @@
 var App = new (function() {
-  var self = this;
   var $window = $(window);
-  var rowHeight = 20;
+  var rowHeight = Common.rowHeight;
+  var extraPixels = 100;
 
-  self.el = "#app";
-  self.template = "#template";
+  var $list, listOffset = 36;
 
-  self.data = {
-    items: Common.list.get(500000),
-    sort: {column: "name", direction: 1},
+  this.el = "#app";
+  this.template = "#template";
+
+  this.data = {
+    items: Common.list.get(500),
+    sortColumn: "name",
+    sortDirection: 1,
     scrollTop: 0,
     startRow: 0,
-    endRow: 0
+    endRow: 0,
+    itemsCount: Common.defaultListSize
   }
 
-  self.computed = {
+  this.computed = {
     sortedItems: function() {
       var items = this.get("items");
-      var sortDirection = this.get("sort.direction");
-      var sortColumn = this.get("sort.column");
+      var sortDirection = this.get("sortDirection");
+      var sortColumn = this.get("sortColumn");
 
-      var t = performance.now();
+      //var t = performance.now();
       items.sort(function(a, b) {
         return a[sortColumn] > b[sortColumn] ? sortDirection : -sortDirection;
       });
 
-      console.log(performance.now() -t);
+      //console.log(performance.now() -t);
       return items;
     },
     visibleItems: function() {
       var scrollTop = this.get("scrollTop");
       var items = this.get("sortedItems");
 
-      var windowHeight = $window.height();
+      var listHeight = $window.height() - listOffset;
 
-      var preloadFactor = 200; // load rows 1000px off the screen
-
-      var startPos = scrollTop - preloadFactor;
-      var endPos = scrollTop + windowHeight + preloadFactor;
+      var startPos = scrollTop - extraPixels;
+      var endPos = scrollTop + listHeight + extraPixels;
 
       var startRow = Math.floor(startPos / rowHeight);
       var endRow = Math.ceil(endPos / rowHeight);
@@ -49,58 +51,73 @@ var App = new (function() {
 
       return items.slice(startRow, endRow);
     },
-    paddingTop: function() {
-      var startRow = this.get("startRow");
-      //if (!visibleStart || !rowHeight || !numColumns) return "0px";
-
-      var padding = Math.round(startRow * rowHeight);
+    offsetTop: function() {
+      var padding = Math.round(this.get("startRow") * rowHeight);
       return padding + "px";
     },
-    paddingBottom: function() {
+    offsetBottom: function() {
       var endRow = this.get("endRow");
       var items = this.get("items");
-      //if (!visibleStart || !rowHeight || !numColumns) return "0px";
-
-      var diff = endRow > items.length ? 0 : items.length - endRow;
+      if (endRow > items.length) {
+        return "0px";
+      }
+      var diff = items.length - endRow;
       var padding = Math.round(diff * rowHeight);
       return padding + "px";
     }
   }
 
+  this.init = function() {
+    $list = $(".item-list");
+    listOffset = $list.offset().top; //grab the original offset of the list
 
-  self.init = function() {
     var self = this;
 
-    var calculateScrollTop = function() {
-      var scrollTop = $window.scrollTop();
+    //This function will set $scope.scrollTop to window.scrolltop every waittime milliseconds
+    //So if waittime is 5ms, scrollTop will get updated NO MORE OFTEN than 5ms
+    var delayedScrollFunction = (function(waitTime) {
+      var timeoutFunc = null;
+      var timestamp = new Date().getTime();
 
-      var listing = $("table");
-      if (listing.length > 0) {
-        var offset = listing.offset();
-        scrollTop -= offset.top;
+      var scrollFunction = function() {
+        self.set("scrollTop", $window.scrollTop());
       }
 
-      self.set("scrollTop", scrollTop);
-    };
+      var returnFunc = function() {
+        clearTimeout(timeoutFunc);
+        var newtimestamp = new Date().getTime();
 
-    calculateScrollTop();
-    $window.scroll(calculateScrollTop);
+        if (newtimestamp - timestamp > waitTime) {
+          scrollFunction()
+        } else{
+          timeoutFunc = setTimeout(scrollFunction, waitTime);
+        }
+        timestamp = newtimestamp;
+      }
+
+      self.set("scrollTop", $window.scrollTop());
+      return returnFunc;
+    })(5); //waittime of 5
+
+    $window.scroll(delayedScrollFunction);
 
     var setSort = function(column, data) {
-      var direction = this.get("sort.direction");
-      this.set("sort.column", column);
-      this.set("sort.direction", -direction);
+      var direction = this.get("sortDirection");
+      this.set("sortColumn", column);
+      this.set("sortDirection", -direction);
     }
 
     this.on({
-      clickName: setSort.bind(this, "name"),
-      clickSize: setSort.bind(this, "size"),
-      clickDate: setSort.bind(this, "date")
+      sortName: setSort.bind(this, "name"),
+      sortSize: setSort.bind(this, "size"),
+      sortDate: setSort.bind(this, "date")
     })
   }
 
 })();
 
-var Foo = Ractive.extend(App);
+(function() {
+  var RactiveApp = Ractive.extend(App);
+  var ractive = new RactiveApp();
+})();
 
-var ractive = new Foo()
