@@ -20,13 +20,13 @@
       </div>
 
       <div class="sorts">
-        <h4 class="sort-column">
+        <h4 class="sort-column {{ this.cssClass('name') }}">
           <span class="sort-text" on-click="sortName">Name</span>
         </h4>
-        <h4 class="sort-column">
+        <h4 class="sort-column {{ this.cssClass('size') }}">
           <span class="sort-text" on-click="sortSize">Size</span>
         </h4>
-        <h4 class="sort-column">
+        <h4 class="sort-column {{ this.cssClass('date')}}">
           <span class="sort-text" on-click="sortDate">Date</span>
         </h4>
       </div>
@@ -43,10 +43,10 @@
       <tbody>
         {{#visibleItems:i}}
         <tr>
-          <td>{{startRow + i}}</td>
-          <td>{{name}}</td>
-          <td>{{size}}</td>
-          <td>{{date}}</td>
+          <td class="index">{{startRow + i}}</td>
+          <td class="name">{{name}}</td>
+          <td class="size">{{size}}</td>
+          <td class="date">{{date}}</td>
         </tr>
         {{/visibleItems}}
       </tbody>
