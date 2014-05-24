@@ -310,14 +310,14 @@ th {
 .header .sorts .sort-column .sort-text {
   cursor: pointer;
 }
-.header .sorts .sort-column.down .sort-text:after {
-  content: " \25B5";
-}
-.header .sorts .sort-column.up .sort-text:after {
-  content: " \25BF";
-}
 .header .sorts .sort-column.active {
   font-weight: 700;
+}
+.header .sorts .sort-column.active.down .sort-text:after {
+  content: " \25B5";
+}
+.header .sorts .sort-column.active.up .sort-text:after {
+  content: " \25BF";
 }
 .header .modify-count {
   padding: 0 12px;

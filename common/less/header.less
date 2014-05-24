@@ -29,21 +29,19 @@
         cursor: pointer;
       }
 
-      &.down {
+      &.active {
+        font-weight: 700;
+      }
+
+      &.active.down {
         .sort-text:after {
           content: " \25B5";
         }
       }
-
-      &.up {
+      &.active.up {
         .sort-text:after {
           content: " \25BF";
         }
-      }
-
-      &.active {
-        font-weight: 700;
-
       }
     }
   }

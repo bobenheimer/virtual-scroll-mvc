@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../common/lib/jquery-1.11.1.min.js"></script>
+    <script src= "lib/knockout-3.1.0.js"></script>
+
+    <script src= "../common/js/base.js"></script>
+
+    <link rel="stylesheet" href="../common/css/app.css" />
+  </head>
+
+<body class="">
+
+  <div class="header">
+    <div class="index">
+      <span>Index</span>
+    </div>
+
+    <div class="sorts">
+      <h4 class="sort-column" data-bind="css: sortCss('name')">
+        <span class="sort-text" data-bind="click: sort.bind(this, 'name')">Name</span>
+      </h4>
+      <h4 class="sort-column" data-bind="css: sortCss('size')">
+        <span class="sort-text" data-bind="click: sort.bind(this, 'size')">Size</span>
+      </h4>
+      <h4 class="sort-column"  data-bind="css: sortCss('date')">
+        <span class="sort-text" data-bind="click: sort.bind(this, 'date')">Date</span>
+      </h4>
+    </div>
+
+    <div class="modify-count">
+      <span class="label">Items in list</span>
+      <input type="number" data-bind="value: itemsCount, valueUpdate: 'afterkeydown'">
+    </div>
+  </div>
+
+  <div class="offset item-list-offset" data-bind="style: { height: offsetTop() }"></div>
+
+  <table class="item-list">
+    <tbody data-bind="foreach: visibleItems">
+      <tr>
+        <td class="index" data-bind="text: $index() + $parent.startRow()"></td>
+        <td class="name" data-bind="text: name"></td>
+        <td class="size" data-bind="text: size"></td>
+        <td class="date" data-bind="text: date"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="offset" data-bind="style: { height: offsetBottom }"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
