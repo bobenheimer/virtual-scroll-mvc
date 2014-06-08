@@ -27,8 +27,8 @@ App.controller('main', function($scope, $timeout) {
         $scope.$apply(scrollFunction)
       } else{
         timeoutFunc = $timeout(scrollFunction, waitTime);
+        timestamp = newtimestamp;
       }
-      timestamp = newtimestamp;
     }
 
     $scope.scrollTop = $window.scrollTop();

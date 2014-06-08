@@ -10,43 +10,19 @@ $(document).ready(function() {
 
     self.sortColumn = ko.observable("name");
     self.sortDirection = ko.observable(1);
-    self.itemsCount = ko.observable(Common.defaultListSize);
-    self.scrollTop = ko.observable();
+
+    self.paddingTop = ko.observable("0px");
+    self.paddingBottom = ko.observable("0px");
     self.startRow = ko.observable();
-    self.endRow = ko.observable();
 
-    //This function will set $scope.scrollTop to window.scrolltop every waittime milliseconds
-    //So if waittime is 5ms, scrollTop will get updated NO MORE OFTEN than 5ms
-    var delayedScrollFunction = (function(waitTime) {
-      var timeoutFunc = null;
-      var timestamp = new Date().getTime();
-
-      var scrollFunction = function() {
-        self.scrollTop($window.scrollTop())
-      }
-
-      var returnFunc = function() {
-        clearTimeout(timeoutFunc);
-        var newtimestamp = new Date().getTime();
-
-        if (newtimestamp - timestamp > waitTime) {
-          scrollFunction()
-        } else{
-          timeoutFunc = setTimeout(scrollFunction, waitTime);
-        }
-        timestamp = newtimestamp;
-      }
-
-      self.scrollTop($window.scrollTop());
-      return returnFunc;
-    })(5); //waittime of 5
-    $window.scroll(delayedScrollFunction);
-
+    self.itemsCount = ko.observable(Common.defaultListSize);
 
     self.items = ko.computed(function() {
       var size = self.itemsCount();
       return Common.list.get(size);
     });
+
+    self.visibleItems = ko.observableArray();
 
     self.sortedItems = ko.computed(function() {
       var items = self.items();
@@ -62,11 +38,11 @@ $(document).ready(function() {
       return items;
     });
 
-    self.visibleItems = ko.computed(function() {
-      var scrollTop = self.scrollTop();
+    var calculateVisibleItems = function() {
+      var scrollTop = $window.scrollTop();
       var listHeight = $window.height() - listOffset;
 
-      var items = self.sortedItems();
+      var items = self.sortedItems.peek();
 
       var startPixel = scrollTop - extraPixels;
       var endPixel = scrollTop + listHeight + extraPixels;
@@ -78,27 +54,40 @@ $(document).ready(function() {
         startRow = 0;
       }
 
+      var paddingTop = Math.round(startRow * rowHeight);
+      var unrenderedTopItems = items.slice(endRow);
+      var paddingBottom = Math.round(unrenderedTopItems.length * rowHeight);
+
       self.startRow(startRow);
-      self.endRow(endRow);
-      return items.slice(startRow, endRow);
-    });
+      self.paddingTop(paddingTop + "px");
+      self.paddingBottom(paddingBottom + "px");
+      self.visibleItems(items.slice(startRow, endRow));
+    }
 
-    self.offsetTop = ko.computed(function() {
-      var padding = Math.round(self.startRow() * rowHeight);
-      return padding + "px";
-    });
+    self.sortedItems.subscribe(calculateVisibleItems);
+    //This function will calculate the vsibie items every waittime milliseconds
+    //So if waittime is 5ms, the visible items will get calculated no more than every 5ms
+    var delayedCalculateVisibleItems = (function(waitTime) {
+      var timeoutFunc = null;
+      var timestamp = new Date().getTime();
 
-    self.offsetBottom = ko.computed(function() {
-      var endRow = self.endRow();
-      var items = self.items();
+      var returnFunc = function() {
+        clearTimeout(timeoutFunc);
+        var newtimestamp = new Date().getTime();
 
-      if (endRow > items.length) {
-        return "0px";
+        if (newtimestamp - timestamp > waitTime) {
+          calculateVisibleItems()
+        } else{
+          timeoutFunc = setTimeout(calculateVisibleItems, waitTime);
+          timestamp = newtimestamp;
+        }
       }
-      var diff = items.length - endRow;
-      var padding = Math.round(diff * rowHeight);
-      return padding + "px";
-    });
+
+      calculateVisibleItems(); //calculate right away
+      return returnFunc;
+    })(5); //waittime of 5
+
+    $window.scroll(delayedCalculateVisibleItems);
 
     self.sort = function(column) {
       var direction = self.sortDirection();
@@ -117,6 +106,7 @@ $(document).ready(function() {
         down: direction === -1
       }
     }
+
   })();
 
   ko.applyBindings(App);

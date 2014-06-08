@@ -34,10 +34,10 @@
     </div>
   </div>
 
-  <div class="offset item-list-offset" data-bind="style: { height: offsetTop() }"></div>
+  <div class="offset item-list-offset" data-bind="style: { height: paddingTop() }"></div>
 
   <table class="item-list">
-    <tbody data-bind="foreach: visibleItems">
+    <tbody data-bind="foreach: visibleItems()">
       <tr>
         <td class="index" data-bind="text: $index() + $parent.startRow()"></td>
         <td class="name" data-bind="text: name"></td>
@@ -47,7 +47,7 @@
     </tbody>
   </table>
 
-  <div class="offset" data-bind="style: { height: offsetBottom }"></div>
+  <div class="offset" data-bind="style: { height: paddingBottom() }"></div>
 
   <script src="js/app.js"></script>
 </body>

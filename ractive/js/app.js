@@ -32,8 +32,8 @@
             scrollFunction()
           } else{
             timeoutFunc = setTimeout(scrollFunction, waitTime);
+            timestamp = newtimestamp;
           }
-          timestamp = newtimestamp;
         }
 
         self.set("scrollTop", $window.scrollTop());
