@@ -1,1 +1,1 @@
-Infinite Scroll with different JavaScript libraries
+Virtual scrolling with different JavaScript libraries

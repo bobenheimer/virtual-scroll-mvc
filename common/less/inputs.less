@@ -1,15 +1,13 @@
-input[type="text"], input[type="password"], textarea {
+input[type="text"], input[type="password"], input[type="number"], textarea {
   font-size: 16px;
   line-height: normal;
 
-  //color: #666666;
-  //border: 1px solid #d1d1d1;
-  //border-radius: 2px;
-
-  padding: 6px;
+  border: 1px solid @input-border;
   outline: 0; // prevent webkit default
 
+  padding: 0 6px;
   &:focus {
-    //border-color: @primary_color;
+    .form-control-focus();
   }
+
 }
