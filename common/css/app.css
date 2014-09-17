@@ -1503,8 +1503,8 @@ select[multiple].input-lg {
   top: 0;
   left: 0;
   right: 0;
+  padding: 0 15px;
   overflow: hidden;
-  background: #eeeeee;
   background-image: -webkit-linear-gradient(#ffffff, #eeeeee 50%, #e4e4e4);
   background-image: -o-linear-gradient(#ffffff, #eeeeee 50%, #e4e4e4);
   background-image: linear-gradient(#ffffff, #eeeeee 50%, #e4e4e4);
@@ -1514,11 +1514,8 @@ select[multiple].input-lg {
   border: 1px solid #d5d5d5;
 }
 .header .framework {
-  float: left;
   font-size: 18px;
   padding: 0 15px;
-}
-.header .framework a {
   color: #666666;
 }
 .header .header-left {
@@ -1532,20 +1529,25 @@ select[multiple].input-lg {
 .header .header-left:after {
   clear: both;
 }
-.header .header-left .sort-column,
-.header .header-left .modify-count {
+.header .header-left .virtual-scroll {
   float: left;
 }
+.header .header-left .virtual-scroll .glyphicon {
+  display: none;
+}
+@media screen and (max-width: 800px) {
+  .header .header-left .virtual-scroll .virtual-scroll-text {
+    display: none;
+  }
+  .header .header-left .virtual-scroll .glyphicon {
+    display: inline;
+  }
+}
 .header .header-left .modify-count {
-  margin: 13px 0;
-  width: 400px;
-}
-.header .header-left .modify-count input,
-.header .header-left .modify-count .label {
+  overflow: hidden;
+  padding: 13px 12px;
   float: left;
-}
-.header .header-left .modify-count input {
-  height: 24px;
+  width: 240px;
 }
 .header .header-left .modify-count .label {
   float: left;
@@ -1553,18 +1555,19 @@ select[multiple].input-lg {
   line-height: 23px;
   background-color: #eeeeee;
   border: 1px solid #cccccc;
-  padding: 0 6px;
-}
-.header .header-left .modify-count .label:first-child {
   border-radius: 4px 0 0 4px;
   border-right: none;
+  padding: 0 6px;
 }
-.header .header-left .modify-count .label:last-child {
-  border-radius: 0 4px 4px 0;
-  border-left: none;
+.header .header-left .modify-count .input-wrap {
+  overflow: hidden;
+  height: 24px;
+}
+.header .header-left .modify-count .input-wrap input {
+  width: 100%;
+  vertical-align: top;
 }
 .header .header-right {
-  padding: 0 15px;
   float: right;
 }
 .main-content .item-header {
