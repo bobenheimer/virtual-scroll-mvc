@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1"/>
+    <meta name="description" content="A Javascript MVC Virtual Scroll comparison of different frameworks - KnockoutJS"/>
+
+    <title>KnockoutJS</title>
     <script src="../common/lib/jquery-1.11.1.min.js"></script>
     <script src= "../common/js/base.js"></script>
 
@@ -15,7 +20,7 @@
       <div class="header-left">
 
         <h4 class="virtual-scroll">
-          <a href="/">
+          <a href="../">
             <span class="virtual-scroll-text">Virtual Scroll Mvc</span>
             <span class="glyphicon glyphicon-home"></span>
           </a>
@@ -59,7 +64,7 @@
           <div class="index" data-bind="text: $index() + $parent.firstRenderedRow()"></div>
           <div class="name" data-bind="text: name"></div>
           <div class="size" data-bind="text: size"></div>
-          <div class="date" data-bind="text: date">1221</div>
+          <div class="date" data-bind="text: date"></div>
         </div>
       </div>
     </div>

@@ -44,10 +44,6 @@ ko.bindingHandlers.virtualScroll = new (function() {
     var data = valueAccessor();
     var $element = $(element);
 
-    //used for throttling the scroll function
-    var timeoutFunc = null;
-    var timestamp = new Date().getTime();
-
     var calcFunction = calculateVisibleItems.bind(this, data, $element);
     var throttledScrollHandler = Common.misc.throttledFunction(calcFunction, WAIT_TIME);
 

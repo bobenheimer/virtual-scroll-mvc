@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1"/>
+    <meta name="description" content="A Javascript MVC Virtual Scroll comparison of different frameworks - RactiveJS"/>
+
+    <title>RactiveJS</title>
+
     <script src="../common/lib/jquery-1.11.1.min.js"></script>
     <script src= "lib/ractive.js"></script>
 
@@ -17,7 +23,7 @@
       <div class="header-left">
 
         <h4 class="virtual-scroll">
-          <a href="/">
+          <a href="../">
             <span class="virtual-scroll-text">Virtual Scroll Mvc</span>
             <span class="glyphicon glyphicon-home"></span>
           </a>
@@ -57,17 +63,15 @@
       </div>
 
       <div class="item-list">
-
+        {{#visibleItems}}
+          <div class="item">
+            <div class="index">1</div>
+            <div class="name">{{name}}</div>
+            <div class="size">{{size}}</div>
+            <div class="date">{{date}}</div>
+          </div>
+        {{/sortedItems}}
       </div>
-
-      <widget message='doodoo' />
-    </div>
-  </script>
-
-  <script id="widget" type="text/ractive">
-    <div class='doo'>
-
-    <div class='foo' on-click="activate">{{message}}</div>
 
     </div>
   </script>
