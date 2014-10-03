@@ -48,7 +48,7 @@
       self.set("$list", $list);
       self.set("listOffset", $list.offset().top);
 
-      self.set("cssClass", function(column) {
+      self.set("cssClasses", function(column) {
         var sortColumn = self.get("sortColumn");
         var direction = self.get("sortDirection");
 
@@ -72,65 +72,36 @@
         var direction = self.get("sortDirection");
         self.set("sortColumn", column);
         self.set("sortDirection", -direction);
-      }
+      };
 
       this.on({
-        sortName: setSort.bind(self, "name"),
-        sortSize: setSort.bind(self, "size"),
-        sortDate: setSort.bind(self, "date")
-      })
+        sortByName: setSort.bind(self, "name"),
+        sortBySize: setSort.bind(self, "size"),
+        sortByDate: setSort.bind(self, "date")
+      });
+    }
+
+  });
+
+  var MyWidget = Ractive.extend({
+    template: '#widget',
+    isolated: true,
+    append: true, // so the component doesn't nuke the <h1>
+
+    init: function () {
+      console.log(this)
+      this.on( 'activate', function () {
+        alert( 'Activating!' );
+      });
     },
-    computed: {
-      sortedItems: function() {
-        var items = this.get("items");
-        var sortDirection = this.get("sortDirection");
-        var sortColumn = this.get("sortColumn");
-
-        //var t = performance.now();
-        items.sort(function(a, b) {
-          return a[sortColumn] > b[sortColumn] ? sortDirection : -sortDirection;
-        });
-
-        //console.log(performance.now() -t);
-        return items;
-      },
-      visibleItems: function() {
-        var scrollTop = this.get("scrollTop");
-        var items = this.get("sortedItems");
-        var listOffset = this.get("listOffset");
-
-        var listHeight = $window.height() - listOffset;
-
-        var startPos = scrollTop - extraPixels;
-        var endPos = scrollTop + listHeight + extraPixels;
-
-        var startRow = Math.floor(startPos / rowHeight);
-        var endRow = Math.ceil(endPos / rowHeight);
-
-        if (startRow < 0) startRow = 0;
-
-        this.set("startRow", startRow);
-        this.set("endRow", endRow);
-
-        return items.slice(startRow, endRow);
-      },
-      offsetTop: function() {
-        var padding = Math.round(this.get("startRow") * rowHeight);
-        return padding + "px";
-      },
-      offsetBottom: function() {
-        var endRow = this.get("endRow");
-        var items = this.get("items");
-        if (endRow > items.length) {
-          return "0px";
-        }
-        var diff = items.length - endRow;
-        var padding = Math.round(diff * rowHeight);
-        return padding + "px";
-      }
+    data: {
+      message: 'No message specified, using the default'
     }
   });
 
-  var ractive = new App();
+  Ractive.components.widget = MyWidget;
+
+
+  ractive = new App();
 })();
 

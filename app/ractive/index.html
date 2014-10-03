@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../common/lib/jquery-1.11.1.min.js"></script>
+    <script src= "lib/ractive.js"></script>
+
+    <script src= "../common/js/base.js"></script>
+
+    <link rel="stylesheet" href="../common/css/app.css" />
+  </head>
+
+<body class="">
+  <div id="app"></div>
+
+  <script id="template" type="text/ractive">
+    <div class="header">
+      <div class="header-left">
+
+        <h4 class="virtual-scroll">
+          <a href="/">
+            <span class="virtual-scroll-text">Virtual Scroll Mvc</span>
+            <span class="glyphicon glyphicon-home"></span>
+          </a>
+        </h4>
+
+        <div class="modify-count">
+          <div class="label"># Items</div>
+          <div class="input-wrap">
+            <input type="number" value="{{itemsCount}}">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="header-right">
+        <a target="_blank" class="framework" href="http://www.ractivejs.org/">Ractive</a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="item-header">
+        <div class="index">
+          <span>#</span>
+        </div>
+        <div class="name {{ cssClasses('name') }}" on-click="sortByName">
+          <span>Name</span>
+          <span class="glyphicon"></span>
+        </div>
+        <div class="size {{ cssClasses('size') }}" on-click="sortBySize">
+          <span>Size</span>
+          <span class="glyphicon"></span>
+        </div>
+        <div class="date {{ cssClasses('date') }}" on-click="sortByDate">
+          <span>Date</span>
+          <span class="glyphicon"></span>
+        </div>
+      </div>
+
+      <div class="item-list">
+
+      </div>
+
+      <widget message='doodoo' />
+    </div>
+  </script>
+
+  <script id="widget" type="text/ractive">
+    <div class='doo'>
+
+    <div class='foo' on-click="activate">{{message}}</div>
+
+    </div>
+  </script>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

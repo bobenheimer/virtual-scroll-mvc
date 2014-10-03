@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../common/lib/jquery-1.11.1.min.js"></script>
+    <script src= "../common/js/base.js"></script>
+
+    <script src= "lib/knockout-3.2.0.debug.js"></script>
+
+    <link rel="stylesheet" href="../common/css/app.css" />
+  </head>
+
+<body class="">
+
+    <div class="header">
+      <div class="header-left">
+
+        <h4 class="virtual-scroll">
+          <a href="/">
+            <span class="virtual-scroll-text">Virtual Scroll Mvc</span>
+            <span class="glyphicon glyphicon-home"></span>
+          </a>
+        </h4>
+
+        <div class="modify-count">
+          <div class="label"># Items</div>
+          <div class="input-wrap">
+            <input type="number" data-bind="textInput: itemsCount">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="header-right">
+        <a target="_blank" class="framework" href="http://knockoutjs.com/">KnockoutJS</a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="item-header">
+        <div class="index">
+          <span>#</span>
+        </div>
+        <div class="name" data-bind="click: sort.bind(this, 'name'), css: sortCss('name')">
+          <span>Name</span>
+          <span class="glyphicon"></span>
+        </div>
+        <div class="size" data-bind="click: sort.bind(this, 'size'), css: sortCss('size')">
+          <span>Size</span>
+          <span class="glyphicon"></span>
+        </div>
+        <div class="date" data-bind="click: sort.bind(this, 'date'), css: sortCss('date')">
+          <span>Date</span>
+          <span class="glyphicon"></span>
+        </div>
+      </div>
+
+      <div class="item-list" data-bind="virtualScroll: $data, foreach: visibleItems">
+        <div class="item">
+          <div class="index" data-bind="text: $index() + $parent.firstRenderedRow()"></div>
+          <div class="name" data-bind="text: name"></div>
+          <div class="size" data-bind="text: size"></div>
+          <div class="date" data-bind="text: date">1221</div>
+        </div>
+      </div>
+    </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

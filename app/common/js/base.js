@@ -1,6 +1,6 @@
 var Common = {
-  defaultListSize: 500,
-  rowHeight: 20
+  DEFAULT_LIST_SIZE: 500,
+  ROW_HEIGHT: 36
 };
 
 Common.list = new (function() {
@@ -9,7 +9,7 @@ Common.list = new (function() {
   var randomNum = function(min, max) {
     var multiplier = max - min + 1;
     return Math.floor(Math.random() * multiplier + min);
-  }
+  };
 
   var randomWord = function(min, max) {
     var length = randomNum(5,50);
@@ -19,7 +19,7 @@ Common.list = new (function() {
     }
 
     return word;
-  }
+  };
 
   self.get = function(size) {
     var arr = [];
@@ -35,3 +35,27 @@ Common.list = new (function() {
     return arr;
   }
 })();
+
+Common.misc = new (function() {
+  var self = this;
+
+  self.throttledFunction = function(callback, waittime) {
+    var timeoutFunc;
+    var timestamp = new Date().getTime();
+
+    return function() {
+      clearTimeout(timeoutFunc);
+      var newtimestamp = new Date().getTime();
+
+      if (newtimestamp - timestamp > waittime) {
+        callback();
+        timestamp = newtimestamp;
+      } else {
+        timeoutFunc = setTimeout(function() {
+          callback();
+        }, waittime);
+      }
+    };
+  };
+
+});

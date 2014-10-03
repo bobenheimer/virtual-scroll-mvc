@@ -1552,7 +1552,7 @@ select[multiple].input-lg {
 .header .header-left .modify-count .label {
   float: left;
   height: 24px;
-  line-height: 23px;
+  line-height: 22px;
   background-color: #eeeeee;
   border: 1px solid #cccccc;
   border-radius: 4px 0 0 4px;
@@ -1622,15 +1622,18 @@ select[multiple].input-lg {
 }
 .main-content .item > *,
 .main-content .item-header > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   float: left;
 }
 .main-content .item .index,
 .main-content .item-header .index {
-  width: 5%;
+  width: 8%;
 }
 .main-content .item .name,
 .main-content .item-header .name {
-  width: 55%;
+  width: 52%;
 }
 .main-content .item .size,
 .main-content .item-header .size {
