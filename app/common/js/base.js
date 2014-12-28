@@ -1,3 +1,4 @@
+"use strict";
 var Common = {
   DEFAULT_LIST_SIZE: 500,
   ROW_HEIGHT: 36
@@ -35,6 +36,22 @@ Common.list = new (function() {
     return arr;
   }
 })();
+
+//http://stackoverflow.com/questions/1531093/how-to-get-current-date-in-javascript
+Common.formatDate = function(date) {
+  var dd = date.getDate();
+  var mm = date.getMonth() + 1; //January is 0!
+  var yyyy = date.getFullYear();
+
+  if (dd < 10) {
+    dd = "0" + dd
+  }
+
+  if (mm < 10) {
+    mm = "0" + mm
+  }
+  return mm + '/' + dd + '/'+yyyy;
+};
 
 Common.misc = new (function() {
   var self = this;

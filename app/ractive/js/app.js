@@ -1,3 +1,4 @@
+"use strict";
 (function() {
   var $window = $(window);
 
@@ -20,14 +21,13 @@
         self.set("sortDirection", -direction);
       };
 
-      //ractive has initialized our template already
-      self.set("$list", $list);
+      self.set("formatDate", Common.formatDate);
 
       self.set("cssClasses", function(column) {
         var sortColumn = self.get("sortColumn");
         var direction = self.get("sortDirection");
 
-        if (sortColumn !== column) return "";
+        if (sortColumn !== column) { return ""; }
 
         var classes = "active ";
         if (direction === 1) {
@@ -41,9 +41,8 @@
 
       var calculateVisibleItems = function() {
         var items = self.get("sortedItems");
-        if (!items) {
-          return;
-        }
+        if (!items) { return; }
+
         var scrollTop = $window.scrollTop();
 
         //the pixels relative to the outer listing wrapper
@@ -72,25 +71,24 @@
           "padding-bottom": paddingBottom + "px"
         });
 
-        //data.firstRenderedRow(startRow)
-        // ;
-        self.set("visibleItems", newVisibleItems)
+        self.set("firstRenderedRow", startRow);
+        self.set("visibleItems", newVisibleItems);
       };
 
-      self.set("calculateVisibleItems", calculateVisibleItems);
       var throttledScrollHandler = Common.misc.throttledFunction(calculateVisibleItems, 24);
 
       $window.on("scroll", throttledScrollHandler);
 
       self.observe("itemsCount", function(newValue, oldValue, keypath) {
-        this.set("items", Common.list.get(newValue))
+        this.set("items", Common.list.get(newValue));
+        $window.scrollTop(0);
       });
 
       self.observe("sortedItems", function() {
         calculateVisibleItems();
       });
 
-      this.on({
+      self.on({
         sortByName: setSort.bind(self, "name"),
         sortBySize: setSort.bind(self, "size"),
         sortByDate: setSort.bind(self, "date")
@@ -108,11 +106,8 @@
 
         return items;
       }
-
     }
-
   });
-
 
   var App = new RactiveApp();
 })();

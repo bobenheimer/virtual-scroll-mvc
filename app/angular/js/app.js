@@ -1,116 +1,108 @@
+"use strict";
 var App = angular.module('app', []);
 
-App.controller('main', function($scope, $timeout) {
-  var $list = $(".item-list");
-  var listOffset = $list.offset().top; //grab the original offset of the list
+App.filter("formatDate", function() {
+  return Common.formatDate;
+});
 
+App.directive("virtualScroll", function($timeout) {
   var $window = $(window);
 
-  var rowHeight = 20;
-  var extraPixels = 100; //extra dom nodes to render on the top and bottom to make things look a bit smoother
+  return {
+    restrict: "A",
+    scope: {
+      scrollFunction: "&"
+    },
+    link: function ($scope, $element, attrs) {
+      var calcFunction = function() {
+        $scope.scrollFunction({
+          args: { $element: $element }
+        });
+      };
 
-  //This function will set $scope.scrollTop to window.scrolltop every waittime milliseconds
-  //So if waittime is 5ms, scrollTop will get updated NO MORE OFTEN than 5ms
-  var delayedScrollFunction = (function(waitTime) {
-    var timeoutFunc = null;
-    var timestamp = new Date().getTime();
-
-    var scrollFunction = function() {
-      $scope.scrollTop = $window.scrollTop();
+      calcFunction();
+      $window.scroll(function() {
+        $timeout(calcFunction)
+      });
     }
+  }
+});
 
-    var returnFunc = function() {
-      $timeout.cancel(timeoutFunc);
-      var newtimestamp = new Date().getTime();
+App.controller("main", function($scope, $timeout) {
+  var $window = $(window);
 
-      if (newtimestamp - timestamp > waitTime) {
-        $scope.$apply(scrollFunction)
-      } else{
-        timeoutFunc = $timeout(scrollFunction, waitTime);
-        timestamp = newtimestamp;
-      }
-    }
-
-    $scope.scrollTop = $window.scrollTop();
-    return returnFunc;
-  })(5); //waittime of 5
-
-  $window.scroll(delayedScrollFunction);
-
-  $scope.inputModels = {
-    itemsCount: Common.defaultListSize
-  };
-
-  $scope.$watch("inputModels.itemsCount", function(val) {
-    $scope.items = Common.list.get(val);
-  });
-
-  $scope.sortColumn = "name";
-  $scope.sortDirection = 1;
-
-  $scope.startRow = 0;
-  $scope.endRow = 0;
-
-  $scope.sortedItems = function() {
-    var sortColumn = $scope.sortColumn;
+  var sortItems = function() {
     var sortDirection = $scope.sortDirection;
-    var items = $scope.items.slice();
+    var sortColumn = $scope.sortColumn;
 
-    items.sort(function(a, b) {
+    $scope.items.sort(function(a, b) {
       return a[sortColumn] > b[sortColumn] ? sortDirection : -sortDirection;
     });
+  };
 
-    return items;
-  }
+  var createItems = function(count) {
+    $scope.items = Common.list.get(count);
+    sortItems();
+  };
 
-  $scope.visibleItems = function() {
-    var items = $scope.sortedItems();
-    var scrollTop = $scope.scrollTop;
+  $scope.scrollFunction = function(args) {
+    var $element = args.$element;
+    var scrollTop = $window.scrollTop();
+    var offset = $element.offset().top;
 
-    var listHeight = $window.height() - listOffset;
+    //the pixels relative to the outer listing wrapper
+    var startPixel = scrollTop - offset;
+    var endPixel = startPixel + $window.height();
 
-    var startPos = scrollTop - extraPixels;
-    var endPos = scrollTop + listHeight + extraPixels;
+    if (startPixel < 0) {
+      startPixel = 0;
+    }
 
-    var startRow = Math.floor(startPos / rowHeight);
-    var endRow = Math.ceil(endPos / rowHeight);
+    //start and end row of the items to show
+    var startRow = Math.floor(startPixel / Common.ROW_HEIGHT);
+    var endRow = Math.ceil(endPixel / Common.ROW_HEIGHT);
 
-    if (startRow < 0) startRow = 0;
+    //extra padding at the top that represents the unrendered top elements
+    var paddingTop = Common.ROW_HEIGHT * startRow;
 
-    $scope.startRow = startRow;
-    $scope.endRow = endRow;
+    //extra padding at the bottom
+    var unrenderedBottomElements = $scope.items.slice(endRow);
+    var paddingBottom = Common.ROW_HEIGHT * unrenderedBottomElements.length;
 
-    return items.slice(startRow, endRow);
-  }
+    $element.css({
+      "padding-top": paddingTop + "px",
+      "padding-bottom": paddingBottom + "px"
+    });
 
-  $scope.changeSort = function(column) {
+    $scope.firstRenderedRow = startRow;
+    $scope.visibleItems = $scope.items.slice(startRow, endRow);
+    console.log($scope.firstRenderedRow)
+  };
+
+  $scope.setSort = function(column) {
+    $scope.sortDirection = $scope.sortDirection * -1;
     $scope.sortColumn = column;
-    $scope.sortDirection *= -1;
-  }
+    sortItems();
+  };
 
   $scope.sortCss = function(column) {
-    if (column !== $scope.sortColumn) {
-      return {};
-    }
     return {
-      active: true,
       up: $scope.sortDirection === 1,
-      down: $scope.sortDirection === -1
-    }
-  }
+      down: $scope.sortDirection === -1,
+      active: column === $scope.sortColumn
+    };
+  };
 
-  $scope.offsetTop = function() {
-    var padding = Math.round($scope.startRow * rowHeight);
-    return padding + "px";
-  }
+  $scope.inputModels = {
+    itemsCount: Common.DEFAULT_LIST_SIZE
+  };
 
-  $scope.offsetBottom = function() {
-    if ($scope.endRow > $scope.items.length) {
-      return "0px";
-    }
-    var diff = $scope.items.length - $scope.endRow;
-    var padding = Math.round(diff * rowHeight);
-    return padding + "px";
-  }
+  $scope.countChange = function() {
+    createItems($scope.inputModels.itemsCount);
+  };
 
+  $scope.sortDirection = 1;
+  $scope.sortColumn = "name";
+
+  createItems(Common.DEFAULT_LIST_SIZE);
 });

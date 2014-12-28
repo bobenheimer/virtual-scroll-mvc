@@ -63,12 +63,12 @@
       </div>
 
       <div class="item-list">
-        {{#visibleItems}}
+        {{#visibleItems:i}}
           <div class="item">
-            <div class="index">1</div>
+            <div class="index">{{firstRenderedRow + i}}</div>
             <div class="name">{{name}}</div>
             <div class="size">{{size}}</div>
-            <div class="date">{{date}}</div>
+            <div class="date">{{formatDate(date)}}</div>
           </div>
         {{/sortedItems}}
       </div>

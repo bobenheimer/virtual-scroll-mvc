@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html ng-app="app">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1"/>
+    <meta name="description" content="A Javascript MVC Virtual Scroll comparison of different frameworks - AngularJS"/>
+    <title>AngularJS</title>
+
     <script src="../common/lib/jquery-1.11.1.min.js"></script>
     <script src= "lib/angular.js"></script>
 
@@ -12,42 +17,58 @@
 
 <body ng-controller="main">
     <div class="header">
-      <div class="index">
-        <span>Index</span>
+
+      <div class="header-left">
+        <h4 class="virtual-scroll">
+          <a href="../">
+            <span class="virtual-scroll-text">Virtual Scroll Mvc</span>
+            <span class="glyphicon glyphicon-home"></span>
+          </a>
+        </h4>
+
+        <div class="modify-count">
+          <div class="label"># Items</div>
+          <div class="input-wrap">
+            <input type="number" ng-model="inputModels.itemsCount" ng-change="countChange()">
+          </div>
+        </div>
       </div>
 
-      <div class="sorts">
-        <h4 class="sort-column" ng-class="sortCss('name')">
-          <span class="sort-text" ng-click="changeSort('name')">Name</span>
-        </h4>
-        <h4 class="sort-column" ng-class="sortCss('size')">
-          <span class="sort-text" ng-click="changeSort('size')">Size</span>
-        </h4>
-        <h4 class="sort-column" ng-class="sortCss('date')">
-          <span class="sort-text" ng-click="changeSort('date')">Date</span>
-        </h4>
+      <div class="header-right">
+        <a target="_blank" class="framework" href="https://angularjs.org/">AngularJS</a>
       </div>
 
-      <div class="modify-count">
-        <span class="label">Items in list</span>
-        <input type="number" ng-model="inputModels.itemsCount">
-      </div>
     </div>
 
-    <div class="offset item-list-offset" ng-style="{'height': offsetTop()}"></div>
+    <div class="main-content">
+      <div class="item-header">
+        <div class="index">
+          <span>#</span>
+        </div>
+        <div class="name" ng-click="setSort('name')" ng-class="sortCss('name')">
+          <span>Name</span>
+          <span class="glyphicon"></span>
+        </div>
+        <div class="size" ng-click="setSort('size')" ng-class="sortCss('size')">
+          <span>Size</span>
+          <span class="glyphicon"></span>
+        </div>
+        <div class="date" ng-click="setSort('date')" ng-class="sortCss('date')">
+          <span>Date</span>
+          <span class="glyphicon"></span>
+        </div>
+      </div>
 
-    <table class="item-list">
-      <tbody>
-        <tr ng-repeat="item in visibleItems()">
-          <td class="index">{{$index + startRow}}</td>
-          <td class="name">{{item.name}}</td>
-          <td class="size">{{item.size}}</td>
-          <td class="date">{{item.date}}</td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="item-list" virtual-scroll scroll-function="scrollFunction(args)">
+          <div class="item" ng-repeat="item in visibleItems">
+            <div class="index">{{firstRenderedRow + $index}}</div>
+            <div class="name">{{item.name}}</div>
+            <div class="size">{{item.size}}</div>
+            <div class="date">{{item.date | formatDate}}</div>
+          </div>
+      </div>
 
-    <div class="offset" ng-style="{'height': offsetBottom()}"></div>
+    </div>
 
 </body>
 </html>

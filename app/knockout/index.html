@@ -64,7 +64,7 @@
           <div class="index" data-bind="text: $index() + $parent.firstRenderedRow()"></div>
           <div class="name" data-bind="text: name"></div>
           <div class="size" data-bind="text: size"></div>
-          <div class="date" data-bind="text: date"></div>
+          <div class="date" data-bind="text: Common.formatDate(date)"></div>
         </div>
       </div>
     </div>

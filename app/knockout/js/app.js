@@ -1,3 +1,4 @@
+"use strict";
 var App;
 
 ko.bindingHandlers.virtualScroll = new (function() {
@@ -51,14 +52,10 @@ ko.bindingHandlers.virtualScroll = new (function() {
     $window.on("resize", calcFunction);
 
     var scrollTopHandler = data.itemsCount.subscribe(function(val) {
-      setTimeout(function() {
-        $window.scrollTop(10);
-      })
-
+      $window.scrollTop(0);
     });
 
     ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
-      clearTimeout(timeoutFunc);
       scrollTopHandler.dispose();
       $window.off("scroll", throttledScrollHandler);
       $window.off("resize", calcFunction);
