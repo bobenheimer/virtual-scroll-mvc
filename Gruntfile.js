@@ -5,8 +5,8 @@ module.exports = function(grunt) {
 
     less: {
       development: {
-        src: ["common/less/app.less"],
-        dest: "common/css/app.css"
+        src: ["app/common/less/app.less"],
+        dest: "app/common/css/app.css"
       }
     },
     watch: {
@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         atBegin: true
       },
       less: {
-        files: ["common/less/**/*"],
+        files: ["app/common/less/**/*"],
         tasks: ["less"]
       }
     }
@@ -24,5 +24,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-less");
   grunt.loadNpmTasks("grunt-contrib-watch");
 
-}
+};
 

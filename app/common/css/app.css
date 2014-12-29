@@ -1564,6 +1564,7 @@ select[multiple].input-lg {
   height: 24px;
 }
 .header .header-left .modify-count .input-wrap input {
+  height: 100%;
   width: 100%;
   vertical-align: top;
 }

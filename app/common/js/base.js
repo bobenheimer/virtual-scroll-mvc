@@ -16,7 +16,7 @@ Common.list = new (function() {
     var length = randomNum(5,50);
     var word = "";
     for (var i = 0; i < length; i++) {
-      word += String.fromCharCode(randomNum(48, 122));
+      word += String.fromCharCode(randomNum(65, 122));
     }
 
     return word;
@@ -31,7 +31,7 @@ Common.list = new (function() {
         name: randomWord(),
         size: randomNum(1, 100000),
         date: new Date(randomNum(1000000000000, timestamp))
-      })
+      });
     }
     return arr;
   }
