@@ -12,10 +12,6 @@
     background-color: @brand-primary;
 
     .name, .size, .date {
-      &.active {
-        //color: @brand-primary;
-      }
-
       &.active.down .glyphicon {
         .glyphicon-chevron-down;
       }
@@ -30,7 +26,6 @@
 
       cursor: pointer;
     }
-
   }
 
   .item-list {
@@ -61,6 +56,13 @@
 
     .date {
       width: 30%;
+    }
+
+    @media screen and (max-width: 400px) {
+      .index { width: 15%; }
+      .name { width: 65%; }
+      .size { width: 20%; }
+      .date { display: none; }
     }
   }
 

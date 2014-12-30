@@ -1,11 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="initial-scale=1"/>
+  <meta name="description" content="A Javascript MVC Virtual Scroll comparison of different frameworks - KnockoutJS, AngularJS, RactiveJS"/>
+
   <title>Infinite Scroll MVC</title>
+
+  <link rel="stylesheet" href="common/css/app.css" />
 </head>
-<body>
-  <a href="knockout">KnockoutJS</a>
-  <a href="angular">AngularJS</a>
-  <a href="ractive">RactiveJS</a>
+<body class="homepage">
+
+  <div class="header">
+    <div class="header-wrapper">
+      <div class="header-left">
+        <h4 class="virtual-scroll">
+          <a href="#">
+            <span class="virtual-scroll-text">Virtual Scroll Mvc</span>
+          </a>
+        </h4>
+      </div>
+
+      <div class="header-right">
+        <a class="framework" href="http://oliphaunts.com">Oliphaunts.com</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="homepage-content">
+
+    <div class="jumbotron">
+      <h2>What is it?</h2>
+      <p>
+        Inspired by <a target="_blank" href="http://todomvc.com/">TodoMVC,</a> Virtual Scroll MVC is a comparison of javascript frameworks
+        implementing "virtual scrolling".  Virtual scrolling differs from <a target="_blank" href="http://xkcd.com/1309/">infinite scrolling</a>
+        because it appears to the user like a normal list of items with a normal scrollbar except that not all of those elements are in the DOM -
+        as the user scrolls, elements remove and are added to the DOM.  This gives significant performance increases on large lists of items.
+      </p>
+      <img class="demo1" src="assets/demo1.jpg" />
+    </div>
+
+
+    <div class="group">
+      <h3 class="title">Frameworks</h3>
+      <a class="framework" href="knockout">Knockout</a>
+      <a class="framework" href="angular">Angular</a>
+      <a class="framework" href="ractive">Ractive</a>
+    </div>
+
+    <div class="group">
+      <h3 class="title">Coming Soon</h3>
+      <a class="framework" href="http://facebook.github.io/react/">React</a>
+      <a class="framework" href="http://emberjs.com/">Ember</a>
+    </div>
+
+  </div>
 </body>
 </html>
