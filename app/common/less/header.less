@@ -8,13 +8,17 @@
   padding: 0 @navbar-padding-horizontal;
   overflow: hidden;
 
-  //background: @navbar-default-bg;
-  .btn-shadow(@navbar-default-bg);
+  background: @navbar-default-bg;
+  //.btn-shadow(@navbar-default-bg);
+
+  a {
+    color: @navbar-default-color;
+  }
 
   .framework {
     font-size: @font-size-large;
     padding: 0 @navbar-padding-horizontal;
-    color: @gray;
+    //color: @gray;
   }
 
   .header-left {
@@ -32,7 +36,7 @@
     }
 
     .modify-count {
-      @input_height: 24px;
+      @input_height: 31px;
       overflow: hidden;
       padding: ((@navbar-height - @input_height) / 2) 12px;
 
@@ -58,6 +62,7 @@
         overflow: hidden;
         height: @input_height;
         input {
+          font-size: 20px;
           height: 100%;
           width: 100%;
           vertical-align: top;
